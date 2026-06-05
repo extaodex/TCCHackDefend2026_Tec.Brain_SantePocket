@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import '../../core/services/desktop_secure_transfer_service.dart';
 import '../../core/services/database_service.dart';
 import '../consultation/consultation_view.dart';
+import '../../main.dart'; // Import to access MainLayout
 
 class DashboardView extends ConsumerStatefulWidget {
   const DashboardView({super.key});
@@ -102,7 +103,11 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
           ],
         ),
         ElevatedButton.icon(
-          onPressed: () {},
+          onPressed: () {
+            // Find MainLayout state and call navigateToReception
+            final mainLayout = context.findAncestorStateOfType<MainLayoutState>();
+            mainLayout?.navigateToReception();
+          },
           icon: const Icon(Icons.add),
           label: const Text('Nouvelle Consultation'),
           style: ElevatedButton.styleFrom(

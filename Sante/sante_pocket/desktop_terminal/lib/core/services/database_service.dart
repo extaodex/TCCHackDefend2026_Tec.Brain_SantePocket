@@ -2,7 +2,6 @@ import 'package:sqflite_sqlcipher/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
-import 'dart:io';
 
 class DatabaseService {
   static Database? _db;

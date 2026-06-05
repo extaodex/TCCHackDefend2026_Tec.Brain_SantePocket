@@ -47,18 +47,23 @@ class MainLayout extends StatefulWidget {
   const MainLayout({super.key});
 
   @override
-  State<MainLayout> createState() => _MainLayoutState();
+  State<MainLayout> createState() => MainLayoutState();
 }
 
-class _MainLayoutState extends State<MainLayout> {
+class MainLayoutState extends State<MainLayout> {
   int _selectedIndex = 0;
 
   final List<Widget> _views = const [
     DashboardView(),
-    ConsultationView(patientRecord: {}),
+    // Will be updated to ReceptionView (the QR code scanner)
+    ConsultationView(patientRecord: {}), 
     PatientsListView(),
     SettingsView(),
   ];
+
+  void navigateToReception() {
+    setState(() => _selectedIndex = 1);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +77,10 @@ class _MainLayoutState extends State<MainLayout> {
         ],
       ),
     );
+  }
+
+  void _navigateToReception() {
+    setState(() => _selectedIndex = 1);
   }
 
   Widget _buildMedicalSidebar() {
@@ -119,9 +128,8 @@ class _MainLayoutState extends State<MainLayout> {
           const SizedBox(height: 48),
           // Navigation Items
           _sidebarItem(0, Icons.dashboard_outlined, Icons.dashboard, 'Tableau de bord'),
-          _sidebarItem(1, Icons.medical_services_outlined, Icons.medical_services, 'Consultation'),
-          _sidebarItem(2, Icons.people_outline, Icons.people, 'Mes Patients'),
-          _sidebarItem(2, Icons.history, Icons.history, 'Historique'),
+          _sidebarItem(1, Icons.qr_code_scanner, Icons.qr_code_scanner, 'Réception'),
+          _sidebarItem(2, Icons.folder_shared_outlined, Icons.folder_shared, 'Dossiers Patients'),
           
           const Spacer(),
           
@@ -150,10 +158,6 @@ class _MainLayoutState extends State<MainLayout> {
                       Text('Généraliste', style: TextStyle(fontSize: 12, color: Colors.grey)),
                     ],
                   ),
-                ),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.settings_outlined, size: 20),
                 ),
               ],
             ),
