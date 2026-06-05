@@ -4,18 +4,48 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:intl/intl.dart';
 import '../../core/services/desktop_secure_transfer_service.dart';
+import '../../core/services/database_service.dart';
 import '../consultation/consultation_view.dart';
 
-class DashboardView extends ConsumerWidget {
+class DashboardView extends ConsumerStatefulWidget {
   const DashboardView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<DashboardView> createState() => _DashboardViewState();
+}
+
+class _DashboardViewState extends ConsumerState<DashboardView> {
+  int _todayCount = 0;
+  int _totalCount = 0;
+  String _doctorName = 'Dr. Dupont';
+
+  @override
+  void initState() {
+    super.initState();
+    _refreshData();
+  }
+
+  Future<void> _refreshData() async {
+    final today = await DatabaseService.getPatientCountToday();
+    final total = await DatabaseService.getTotalPatientCount();
+    final profile = await DatabaseService.getDoctorProfile();
+    if (mounted) {
+      setState(() {
+        _todayCount = today;
+        _totalCount = total;
+        _doctorName = profile['name'] ?? 'Dr. Dupont';
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final state = ref.watch(secureTransferServiceProvider);
     final service = ref.read(secureTransferServiceProvider.notifier);
 
     ref.listen(secureTransferServiceProvider, (previous, next) {
       if (next.status == ConnectionStatus.connected && next.patientRecord != null) {
+        _refreshData(); // Refresh counts when a new record is received
         Navigator.of(context).push(
           MaterialPageRoute(builder: (context) => ConsultationView(patientRecord: next.patientRecord!)),
         );
@@ -61,7 +91,7 @@ class DashboardView extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Bonjour, Dr. Dupont',
+              'Bonjour, $_doctorName',
               style: Theme.of(context).textTheme.headlineLarge,
             ),
             const SizedBox(height: 4),
@@ -89,9 +119,9 @@ class DashboardView extends ConsumerWidget {
   Widget _buildStatsGrid(BuildContext context) {
     return Row(
       children: [
-        Expanded(child: _buildStatCard(context, 'Patients du jour', '12', Icons.people, Colors.blue)),
+        Expanded(child: _buildStatCard(context, 'Patients du jour', '$_todayCount', Icons.people, Colors.blue)),
         const SizedBox(width: 24),
-        Expanded(child: _buildStatCard(context, 'Transferts P2P', '08', Icons.swap_horiz, Colors.teal)),
+        Expanded(child: _buildStatCard(context, 'Total Dossiers', '$_totalCount', Icons.storage, Colors.teal)),
         const SizedBox(width: 24),
         Expanded(child: _buildStatCard(context, 'Alertes Critiques', '02', Icons.warning_amber_rounded, Colors.orange)),
         const SizedBox(width: 24),

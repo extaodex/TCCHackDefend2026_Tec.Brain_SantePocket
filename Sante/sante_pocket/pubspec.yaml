@@ -63,6 +63,7 @@ dependencies:
   wifi_iot: ^0.3.19+2
   nearby_connections: ^4.3.0
   http: ^1.2.0
+  flutter_animate: ^4.5.2
 
 dev_dependencies:
   flutter_test:

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:desktop_terminal/features/dashboard/dashboard_view.dart';
 import 'package:desktop_terminal/features/consultation/consultation_view.dart';
 import 'package:desktop_terminal/features/dashboard/patients_list_view.dart';
+import 'package:desktop_terminal/features/dashboard/settings_view.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
@@ -56,6 +57,7 @@ class _MainLayoutState extends State<MainLayout> {
     DashboardView(),
     ConsultationView(patientRecord: {}),
     PatientsListView(),
+    SettingsView(),
   ];
 
   @override
@@ -122,6 +124,8 @@ class _MainLayoutState extends State<MainLayout> {
           _sidebarItem(2, Icons.history, Icons.history, 'Historique'),
           
           const Spacer(),
+          
+          _sidebarItem(3, Icons.settings_outlined, Icons.settings, 'Paramètres'),
           
           // Doctor Profile info
           Container(

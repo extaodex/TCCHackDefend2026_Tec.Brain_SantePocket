@@ -63,12 +63,41 @@ class DatabaseService {
     final List<Map<String, dynamic>> maps = await db.query('patients', orderBy: 'created_at DESC');
     
     return List.generate(maps.length, (i) {
-      return jsonDecode(maps[i]['data']);
+      final patientData = jsonDecode(maps[i]['data']) as Map<String, dynamic>;
+      patientData['db_id'] = maps[i]['id']; // Ensure ID is available for deletion
+      return patientData;
     });
   }
 
   static Future<void> deletePatient(String id) async {
     final db = await database;
     await db.delete('patients', where: 'id = ?', whereArgs: [id]);
+  }
+
+  static Future<int> getPatientCountToday() async {
+    final db = await database;
+    final today = DateTime.now().toIso8601String().split('T')[0];
+    final result = await db.rawQuery('SELECT COUNT(*) as count FROM patients WHERE created_at LIKE ?', ['$today%']);
+    return Sqflite.firstIntValue(result) ?? 0;
+  }
+
+  static Future<int> getTotalPatientCount() async {
+    final db = await database;
+    final result = await db.rawQuery('SELECT COUNT(*) as count FROM patients');
+    return Sqflite.firstIntValue(result) ?? 0;
+  }
+
+  static Future<void> saveDoctorProfile(String name, String specialty) async {
+    final db = await database;
+    await db.execute('CREATE TABLE IF NOT EXISTS profile (id INTEGER PRIMARY KEY, name TEXT, specialty TEXT)');
+    await db.insert('profile', {'id': 1, 'name': name, 'specialty': specialty}, conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  static Future<Map<String, String>> getDoctorProfile() async {
+    final db = await database;
+    await db.execute('CREATE TABLE IF NOT EXISTS profile (id INTEGER PRIMARY KEY, name TEXT, specialty TEXT)');
+    final List<Map<String, dynamic>> maps = await db.query('profile', where: 'id = 1');
+    if (maps.isEmpty) return {'name': 'Dr. Dupont', 'specialty': 'Généraliste'};
+    return {'name': maps[0]['name']?.toString() ?? 'Dr. Dupont', 'specialty': maps[0]['specialty']?.toString() ?? 'Généraliste'};
   }
 }

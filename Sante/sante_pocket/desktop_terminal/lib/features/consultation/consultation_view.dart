@@ -1,15 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../core/services/pdf_service.dart';
+import '../../core/services/database_service.dart';
 
-class ConsultationView extends StatelessWidget {
+class ConsultationView extends StatefulWidget {
   final Map<String, dynamic> patientRecord;
 
   const ConsultationView({super.key, required this.patientRecord});
 
   @override
+  State<ConsultationView> createState() => _ConsultationViewState();
+}
+
+class _ConsultationViewState extends State<ConsultationView> {
+  late TextEditingController _notesController;
+  bool _isEditing = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _notesController = TextEditingController(text: widget.patientRecord['notes']);
+  }
+
+  Future<void> _saveNotes() async {
+    final updatedRecord = Map<String, dynamic>.from(widget.patientRecord);
+    updatedRecord['notes'] = _notesController.text;
+    await DatabaseService.savePatient(updatedRecord);
+    setState(() => _isEditing = false);
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Dossier mis à jour')),
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final patientRecord = widget.patientRecord;
     final allergies = (patientRecord['allergies'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [];
     final name = patientRecord['nom'] ?? 'N/A';
     final firstName = patientRecord['prenom'] ?? 'N/A';
@@ -73,7 +101,7 @@ class ConsultationView extends StatelessWidget {
                 const SizedBox(width: 24),
                 Expanded(
                   flex: 1,
-                  child: _buildConsultationNotes(context, patientRecord['notes']),
+                  child: _buildConsultationNotes(context, _notesController.text),
                 ),
               ],
             ),
@@ -240,7 +268,16 @@ class ConsultationView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Notes de Consultation', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text('Rapport Médical', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                IconButton(
+                  icon: Icon(_isEditing ? Icons.save : Icons.edit, color: Colors.teal),
+                  onPressed: _isEditing ? _saveNotes : () => setState(() => _isEditing = true),
+                ),
+              ],
+            ),
             const SizedBox(height: 16),
             Container(
               width: double.infinity,
@@ -248,12 +285,18 @@ class ConsultationView extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.grey.shade50,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.grey.shade200),
+                border: Border.all(color: _isEditing ? Colors.teal.withAlpha(100) : Colors.grey.shade200),
               ),
-              child: Text(
-                notes ?? 'Aucune note transmise pour ce dossier.',
-                style: const TextStyle(height: 1.5, fontSize: 15),
-              ),
+              child: _isEditing
+                  ? TextField(
+                      controller: _notesController,
+                      maxLines: 10,
+                      decoration: const InputDecoration(border: InputBorder.none, hintText: 'Écrire le rapport...'),
+                    )
+                  : Text(
+                      _notesController.text.isEmpty ? 'Aucun rapport rédigé.' : _notesController.text,
+                      style: const TextStyle(height: 1.5, fontSize: 15),
+                    ),
             ),
             const SizedBox(height: 24),
             const Text('Dernière mise à jour', style: TextStyle(color: Colors.grey, fontSize: 12)),

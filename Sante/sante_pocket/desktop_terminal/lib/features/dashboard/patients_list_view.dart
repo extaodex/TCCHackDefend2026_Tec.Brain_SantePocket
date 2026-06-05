@@ -23,11 +23,13 @@ class _PatientsListViewState extends State<PatientsListView> {
 
   Future<void> _loadPatients() async {
     final patients = await DatabaseService.getAllPatients();
-    setState(() {
-      _patients = patients;
-      _filteredPatients = patients;
-      _isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        _patients = patients;
+        _filteredPatients = patients;
+        _isLoading = false;
+      });
+    }
   }
 
   void _filterPatients(String query) {
@@ -110,22 +112,55 @@ class _PatientsListViewState extends State<PatientsListView> {
           margin: const EdgeInsets.only(bottom: 12),
           child: ListTile(
             contentPadding: const EdgeInsets.all(16),
-            leading: CircleAvatar(
-              backgroundColor: Theme.of(context).colorScheme.primary.withAlpha(25),
-              child: Text(patient['nom'][0] + patient['prenom'][0]),
-            ),
-            title: Text('${patient['nom'].toUpperCase()} ${patient['prenom']}', 
-                style: const TextStyle(fontWeight: FontWeight.bold)),
-            subtitle: Text('Né(e) le ${patient['dob']} • Groupe: ${patient['groupeSanguin']}'),
-            trailing: const Icon(Icons.chevron_right),
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => ConsultationView(patientRecord: patient)),
-              );
+              ).then((_) => _loadPatients());
             },
+            leading: CircleAvatar(
+              backgroundColor: Theme.of(context).colorScheme.primary.withAlpha(25),
+              child: Text((patient['nom']?[0] ?? '?') + (patient['prenom']?[0] ?? '?')),
+            ),
+            title: Text('${(patient['nom'] ?? 'N/A').toUpperCase()} ${patient['prenom'] ?? ''}', 
+                style: const TextStyle(fontWeight: FontWeight.bold)),
+            subtitle: Text('Né(e) le ${patient['dob'] ?? 'N/A'} • Groupe: ${patient['groupeSanguin'] ?? '?'}'),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.delete_outline, color: Colors.redAccent),
+                  onPressed: () => _confirmDelete(patient['db_id']),
+                ),
+                const Icon(Icons.chevron_right),
+              ],
+            ),
           ),
         );
       },
     );
+  }
+
+  Future<void> _confirmDelete(String? id) async {
+    if (id == null) return;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Supprimer le dossier ?'),
+        content: const Text('Cette action est irréversible et supprimera toutes les données de ce patient localement.'),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('ANNULER')),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('SUPPRIMER'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      await DatabaseService.deletePatient(id);
+      _loadPatients();
+    }
   }
 }

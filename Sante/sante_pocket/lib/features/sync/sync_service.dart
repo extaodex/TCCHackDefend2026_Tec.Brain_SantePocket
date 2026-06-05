@@ -81,6 +81,32 @@ class SyncService {
     return mshPath;
   }
 
+  static Future<Map<String, dynamic>> getDossierMap() async {
+    final db = await DatabaseHelper.instance.database;
+
+    final patients = await db.query('patients');
+    final consultations = await db.query('consultations');
+    final ordonnances = await db.query('ordonnances');
+    final examens = await db.query('examens_analyses');
+    final vaccinations = await db.query('vaccinations');
+    final contactsUrgence = await db.query('contacts_urgence');
+    final allergies = await db.query('allergies');
+    final symptomes = await db.query('symptomes');
+
+    return {
+      'version': '1.0.0',
+      'timestamp': DateTime.now().toIso8601String(),
+      'patients': patients,
+      'consultations': consultations,
+      'ordonnances': ordonnances,
+      'examens_analyses': examens,
+      'vaccinations': vaccinations,
+      'contacts_urgence': contactsUrgence,
+      'allergies': allergies,
+      'symptomes': symptomes,
+    };
+  }
+
   /// Taille formatée du fichier
   static String formatFileSize(int bytes) {
     if (bytes < 1024) return '$bytes o';

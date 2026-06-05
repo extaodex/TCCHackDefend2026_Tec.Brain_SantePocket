@@ -28,6 +28,7 @@ class PatientSyncService {
     return jsonDecode(encrypter.decrypt64(encryptedBase64, iv: _iv));
   }
 
+  /// Envoyer le dossier au médecin (Format JSON chiffré)
   Future<bool> sendRecordToDoctor(Map<String, dynamic> record) async {
     if (_serverUrl == null) return false;
     try {
@@ -37,6 +38,8 @@ class PatientSyncService {
       );
       return response.statusCode == 200;
     } catch (e) {
+      // ignore: avoid_print
+      print('Erreur lors de l\'envoi: $e');
       return false;
     }
   }
