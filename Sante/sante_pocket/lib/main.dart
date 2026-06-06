@@ -11,6 +11,7 @@ import 'features/documents/vaccins_screen.dart';
 import 'features/documents/symptomes_screen.dart';
 import 'features/documents/documents_screen.dart';
 import 'features/sync/sync_screen.dart';
+import 'features/sync/p2p_screen.dart';
 import 'features/onboarding/onboarding_screen.dart';
 import 'core/services/notification_service.dart';
 
@@ -58,6 +59,10 @@ final _router = GoRouter(
     GoRoute(
       path: '/sync',
       builder: (context, state) => const SyncScreen(),
+    ),
+    GoRoute(
+      path: '/p2p',
+      builder: (context, state) => const P2PScreen(),
     ),
   ],
 );

@@ -73,4 +73,4 @@ L'interface utilise le thème **"Modern Medical"** :
 Ce projet est développé dans le cadre d'un système de santé numérique moderne.
 
 ---
-*Développé avec ❤️ par Santé Pocket Team.*
+*Développé avec ❤️ par Tec.Brain.*

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../core/theme/app_theme.dart';
 import 'sync_service.dart';
@@ -122,6 +123,27 @@ class _SyncScreenState extends State<SyncScreen> {
                 Icons.medical_information_rounded, AppTheme.pendingOrangeLight),
 
             const SizedBox(height: 40),
+
+            // P2P Direct Share button
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: () => context.push('/p2p'),
+                icon: const Icon(Icons.wifi_tethering_rounded, color: Colors.white),
+                label: const Text(
+                  'Partage Direct (P2P – WiFi local)',
+                  style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.w700),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppTheme.pendingOrangeLight,
+                  padding: const EdgeInsets.symmetric(vertical: 18),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                  elevation: 0,
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 24),
 
             // Export button
             SizedBox(
