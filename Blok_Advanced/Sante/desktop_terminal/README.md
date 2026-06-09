@@ -1,19 +1,5 @@
-# desktop_terminal
+# Santé Pocket - Terminal Médecin (PC)
 
-> **Statut :** Version en cours de développement. La version complète avec toutes ses fonctionnalités sera disponible bientôt.
+Ce terminal est l'outil professionnel pour le médecin. Il permet de réceptionner les données patients, consulter les historiques, et renvoyer des notes médicales via P2P.
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Pour les instructions complètes, l'architecture et les détails du projet, veuillez consulter le [README racine](../README.md).
