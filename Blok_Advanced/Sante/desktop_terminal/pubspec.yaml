@@ -1,0 +1,44 @@
+name: desktop_terminal
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.5
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  archive: ^3.6.0
+  file_picker: ^8.0.0
+  network_info_plus: ^6.0.1
+  device_info_plus: ^10.1.2
+  uuid: ^4.4.0
+  flutter_riverpod: ^3.3.1
+  go_router: ^17.3.0
+  sqflite_sqlcipher: ^3.4.0
+  path_provider: ^2.1.5
+  path: ^1.9.1
+  sante_pocket:
+    path: ../sante_pocket
+  flutter_animate: ^4.5.2
+  intl: ^0.20.2
+  pdf: ^3.12.0
+  printing: ^5.14.3
+  url_launcher: ^6.3.2
+  shared_preferences: ^2.3.0
+  encrypt: ^5.0.3
+  qr_flutter: ^4.1.0
+  crypto: ^3.0.5
+  bonsoir: ^3.0.0
+  pointycastle: ^3.9.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
