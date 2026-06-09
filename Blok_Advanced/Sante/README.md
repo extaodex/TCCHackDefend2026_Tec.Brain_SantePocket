@@ -11,10 +11,10 @@ Au Togo, près de 80% des patients perdent leurs dossiers médicaux en raison de
 ---
 
 ## 👥 L'Équipe (TecBrain)
-* **AKATA Odayétobi Exaucé** : Chef de projet & Architecture Flutter (Dev 1)
-* **HALOUBIYOU Beni Essowazouna** : UI/UX Design & Version Mobile (Dev 2)
-* **DJIGBANI Achille Moni** : Sécurité & Chiffrement AES-256 (Dev 3)
-* **ABALO Ganiatou Celia** : Version Desktop & Base de données (Dev 4)
+* **AKATA Odayétobi Exaucé** : Chef de projet & Architecture Flutter
+* **HALOUBIYOU Beni Essowazouna** : UI/UX Design & Version Mobile
+* **DJIGBANI Achille Moni** : Sécurité & Chiffrement AES-256
+* **ABALO Ganiatou Celia** : Version Desktop & Base de données
 
 ---
 
