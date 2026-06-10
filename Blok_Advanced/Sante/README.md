@@ -1,14 +1,18 @@
-# 🏥 Santé Pocket - Le carnet de santé numérique sécurisé
+# 🏥 Santé Pocket • Écosystème Médical P2P
 
-**Track :** Hackathon  
-**Problématique :** Perte, fragilité et défaut de partage sécurisé des données médicales au Togo (Alternative décentralisée "Zéro Cloud").
+Santé Pocket est une solution de carnet de santé numérique sécurisée et décentralisée, conçue pour faciliter le partage d'informations critiques entre patients et médecins, même dans les zones sans connexion internet (Offline-First/Zéro Cloud).
+
+L'écosystème se compose de deux applications distinctes partageant une identité visuelle commune propulsée par le moteur de Tec.Brain, garantissant une confidentialité totale des données médicales.
+
+🚀 État du Projet : v1.0 (Core Features Complete)
+L'ensemble des fonctionnalités critiques pour le flux patient-médecin sont désormais implémentées et opérationnelles.
 
 ---
 
-## 📝 Description du Projet
-Au Togo, près de 80% des patients perdent leurs dossiers médicaux en raison de la fragilité du format papier. **Santé Pocket** résout ce problème en proposant une solution de carnet de santé numérique décentralisée et ultra-sécurisée. L'application permet un partage instantané des antécédents médicaux entre le patient (sur mobile Android) et le médecin (sur terminal Windows Desktop) via un réseau Pair-à-Pair (P2P) local, sans nécessiter aucune connexion Internet (**Zéro Cloud**).
+L'écosystème se compose de deux applications distinctes partageant une identité visuelle commune propulsée par le moteur de Tec.Brain, garantissant une confidentialité totale des données médicales.
 
----
+🚀 État du Projet : v1.0 (Core Features Complete)
+L'ensemble des fonctionnalités critiques pour le flux patient-médecin sont désormais implémentées et opérationnelles.
 
 ## 👥 L'Équipe (TecBrain)
 * **AKATA Odayétobi Exaucé** : Chef de projet & Architecture Flutter
@@ -18,24 +22,52 @@ Au Togo, près de 80% des patients perdent leurs dossiers médicaux en raison de
 
 ---
 
-## 🔒 Sécurité du PoC (Proof of Concept)
-* **Chiffrement local :** Base de données locale chiffrée avec **SQLCipher**.
-* **Chiffrement des flux :** Algorithme **AES-256-GCM** avec dérivation de clé **PBKDF2** pour les transferts de fichiers.
-* **Souveraineté :** Le patient reste le seul détenteur et maître de sa clé de déchiffrement.
+## 🛠 Fonctionnalités Implémentées
+
+### 📱 Application Mobile (Patient)
+- **Identité & Onboarding :** Gestion du profil, constantes physiques et photo.
+- **Urgence :** Allergies critiques, contacts de secours.
+- **Documents :** Scanner PDF local, gestion vaccinale, historique médical.
+
+### 💻 Terminal Médecin (PC)
+- **Tableau de Bord :** Statistiques temps réel, réception P2P automatique.
+- **Gestion de Dossier :** Extraction automatique (.msh), visualisation PDF, édition de rapports, historique complet.
 
 ---
 
-## 💻 Prérequis du Système
-* **Framework :** Flutter (Version stable 3.x ou supérieure)
-* **Langage :** Dart
-* **Cibles :** Android (SDK 21+) / Windows (10/11)
-* **Outils requis :** Android Studio ou VS Code, Flutter SDK installé.
+## 📡 Architecture Technique
+- **Communication :** mDNS (découverte) + TCP (transport sécurisé).
+- **Sécurité :** Chiffrement AES-256-GCM, PBKDF2 pour la dérivation de clés, SQLCipher pour les bases locales.
+- **Protocole :** Format d'archive `.msh` sécurisé (JSON structuré + documents chiffrés).
 
 ---
 
-## 🚀 Installation et Lancement
+## 📁 Soumission (Hackathon)
+Retrouvez les documents officiels pour le jury dans le dossier `/submission` :
+- [Dossier Technique PDF](/submission/TECHNIQUE.pdf)
+- [Présentation Pitch PDF](/submission/PRESENTATION.pdf)
+
+---
+
+## 🚀 Installation et Build
 
 ### 1. Cloner le projet
 ```bash
-git clone [https://github.com/extaodex/TCCHackDefend2026_TecBrain.git](https://github.com/extaodex/TCCHackDefend2026_TecBrain.git)
-cd TCCHackDefend2026_TecBrain
+git clone https://github.com/extaodex/TCCHackDefend2026_Tec.Brain_SantePocket.git
+cd TCCHackDefend2026_Tec.Brain_SantePocket
+```
+
+### 2. Builds de production
+**Mobile (Santé Pocket) :**
+```bash
+cd sante_pocket
+flutter pub get
+flutter build apk --release
+```
+
+**Terminal Médecin (PC) :**
+```bash
+cd desktop_terminal
+flutter pub get
+flutter build windows --release
+```
