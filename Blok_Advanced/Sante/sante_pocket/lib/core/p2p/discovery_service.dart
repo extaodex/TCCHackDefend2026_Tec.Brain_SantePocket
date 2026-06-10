@@ -132,7 +132,9 @@ class DiscoveryService {
   }
 
   void _handleBonsoirEvent(BonsoirDiscoveryEvent event) {
-    if (event.type == BonsoirDiscoveryEventType.discoveryServiceResolved) {
+    if (event.type == BonsoirDiscoveryEventType.discoveryServiceFound) {
+      event.service?.resolve(_bonsoirDiscovery!.serviceResolver);
+    } else if (event.type == BonsoirDiscoveryEventType.discoveryServiceResolved) {
       final service = event.service;
       if (service is ResolvedBonsoirService) {
         final attributes = service.attributes;
@@ -140,7 +142,7 @@ class DiscoveryService {
 
         final uuid = attributes['uuid'];
         final type = attributes['type'] ?? 'unknown';
-        final ip = service.host;
+        final ip = service.ip;
 
         if (uuid != null && ip != null) {
           _devices[uuid] = DiscoveredDevice(
